@@ -1,542 +1,613 @@
-import React, { useState } from 'react';
-import { 
-  LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, 
-  XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
-  RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar
-} from 'recharts';
-import { Building, MapPin, Euro, Calendar, Ruler, Hammer, Scale, AlertTriangle, CheckCircle, Award, TrendingUp, Home, Briefcase } from 'lucide-react';
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thisavros - Analisi Asta Immobiliare</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .thisavros-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .thisavros-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .active-tab {
+            color: #4f46e5;
+            border-bottom: 2px solid #4f46e5;
+            background-color: #eef2ff;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <!-- Header -->
+        <header class="flex items-center justify-between mb-8 pb-4 border-b border-gray-200">
+            <div class="flex items-center text-3xl font-bold text-indigo-700">
+                <i class="fas fa-award text-indigo-500 mr-2"></i>
+                Thisavros
+            </div>
+            <div class="text-right">
+                <h2 class="text-sm font-medium text-gray-500">Analisi Asta Immobiliare</h2>
+                <p class="text-xl font-bold text-gray-800">NA4885/2023</p>
+            </div>
+        </header>
 
-// Definizione dello stile generale
-const styles = {
-  container: "p-8 bg-slate-50 rounded-lg shadow-lg max-w-6xl mx-auto",
-  header: "flex items-center justify-between mb-8 border-b border-gray-200 pb-4",
-  logo: "text-3xl font-bold text-indigo-700 flex items-center",
-  logoIcon: "mr-2 text-indigo-500",
-  mainContent: "grid grid-cols-1 lg:grid-cols-3 gap-6",
-  sidebar: "lg:col-span-1",
-  content: "lg:col-span-2",
-  card: "bg-white rounded-lg shadow p-6 mb-6",
-  cardHeader: "text-xl font-semibold mb-4 text-gray-800 flex items-center border-b border-gray-100 pb-2",
-  cardIcon: "mr-2 text-indigo-500",
-  infoGrid: "grid grid-cols-2 gap-4",
-  infoItem: "flex flex-col",
-  infoLabel: "text-sm font-medium text-gray-500",
-  infoValue: "text-lg font-semibold text-gray-800",
-  sectionTitle: "text-2xl font-bold mb-4 text-gray-800 flex items-center",
-  sectionIcon: "mr-2 text-indigo-600",
-  pill: "px-3 py-1 rounded-full text-sm font-medium",
-  tabButton: "px-4 py-2 font-medium rounded-t-lg",
-  badge: "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium",
-  divider: "my-6 border-t border-gray-200",
-  footer: "mt-8 text-center text-gray-500 text-sm",
-};
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Sidebar -->
+            <div class="lg:col-span-1">
+                <!-- Property Card -->
+                <div class="thisavros-card p-6 mb-6">
+                    <h3 class="flex items-center text-xl font-semibold mb-4 text-gray-800 border-b border-gray-100 pb-2">
+                        <i class="fas fa-map-marker-alt text-indigo-500 mr-2"></i>
+                        Ubicazione
+                    </h3>
+                    <p class="text-gray-700 mb-4">Via Abate Felice Toscano n. 28 (ex 26), int. 3, Piano 3, Comune di Pomigliano d'Arco (NA)</p>
+                    
+                    <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                        <div class="flex justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-500">Prezzo Base</span>
+                            <span class="text-lg font-bold text-indigo-600">€130.300</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm font-medium text-gray-500">Prezzo/mq</span>
+                            <span class="text-lg font-bold text-indigo-600">€1.353/mq</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="flex justify-between mb-1">
+                            <span class="text-sm text-gray-500">Valore di mercato</span>
+                            <span class="text-sm font-medium">€156.954</span>
+                        </div>
+                        <div class="flex justify-between mb-1">
+                            <span class="text-sm text-gray-500">Offerta minima</span>
+                            <span class="text-sm font-medium">€97.725</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-500">Data asta</span>
+                            <span class="text-sm font-medium">15 aprile 2025</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-2">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
+                            <i class="fas fa-home mr-1"></i> Appartamento
+                        </span>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                            <i class="fas fa-ruler mr-1"></i> 96,35 mq
+                        </span>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            <i class="fas fa-box mr-1"></i> Cantinola
+                        </span>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                            <i class="fas fa-star-half-alt mr-1"></i> Medio
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- ROI Card -->
+                <div class="thisavros-card p-6 mb-6">
+                    <h3 class="flex items-center text-xl font-semibold mb-4 text-gray-800 border-b border-gray-100 pb-2">
+                        <i class="fas fa-balance-scale text-indigo-500 mr-2"></i>
+                        Valutazione ROI
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm font-medium text-gray-600">Pessimistico</span>
+                                <span class="text-sm font-medium text-red-600">7,5%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-red-500 h-2.5 rounded-full" style="width: 22.5%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm font-medium text-gray-600">Realistico</span>
+                                <span class="text-sm font-medium text-yellow-600">20%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-yellow-500 h-2.5 rounded-full" style="width: 60%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm font-medium text-gray-600">Ottimistico</span>
+                                <span class="text-sm font-medium text-green-600">30%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-green-500 h-2.5 rounded-full" style="width: 90%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 pt-4 border-t border-gray-100">
+                        <h4 class="text-sm font-semibold text-gray-700 mb-2">Raccomandazione</h4>
+                        <div class="flex items-center">
+                            <div class="w-4 h-4 rounded-full bg-yellow-500 mr-2"></div>
+                            <span class="font-semibold text-gray-700">GIALLO/VERSO IL VERDE</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-2">
+                            Prezzo massimo consigliato: <span class="font-bold">€110.000</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="lg:col-span-2">
+                <div class="thisavros-card mb-6">
+                    <!-- Tabs -->
+                    <div class="flex border-b">
+                        <button onclick="changeTab('overview')" id="tab-overview" class="px-4 py-2 font-medium rounded-t-lg active-tab">
+                            <i class="fas fa-th-large mr-1"></i> Panoramica
+                        </button>
+                        <button onclick="changeTab('financial')" id="tab-financial" class="px-4 py-2 font-medium rounded-t-lg text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-chart-line mr-1"></i> Analisi Finanziaria
+                        </button>
+                        <button onclick="changeTab('risks')" id="tab-risks" class="px-4 py-2 font-medium rounded-t-lg text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-exclamation-triangle mr-1"></i> Rischi/Opportunità
+                        </button>
+                        <button onclick="changeTab('recommendation')" id="tab-recommendation" class="px-4 py-2 font-medium rounded-t-lg text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-award mr-1"></i> Raccomandazione
+                        </button>
+                    </div>
+                    
+                    <!-- Tab Content -->
+                    <div class="p-6">
+                        <!-- Overview Tab -->
+                        <div id="content-overview" class="tab-content">
+                            <div class="thisavros-card p-6 mb-6 shadow-sm">
+                                <h3 class="flex items-center text-xl font-semibold mb-4 text-gray-800 border-b border-gray-100 pb-2">
+                                    <i class="fas fa-building text-indigo-500 mr-2"></i>
+                                    Informazioni Immobile
+                                </h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <span class="text-sm font-medium text-gray-500">Tipologia</span>
+                                        <p class="text-lg font-semibold text-gray-800">Appartamento di tipo economico con cantinola</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-sm font-medium text-gray-500">Superficie Commerciale</span>
+                                        <p class="text-lg font-semibold text-gray-800">96,35 mq</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-sm font-medium text-gray-500">Composizione</span>
+                                        <p class="text-lg font-semibold text-gray-800">Ingresso, soggiorno, cucina, disimpegno, 2 camere da letto, bagno, 2 balconi + cantinola</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-sm font-medium text-gray-500">Stato Conservazione</span>
+                                        <p class="text-lg font-semibold text-gray-800">Medio</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="thisavros-card p-6 mb-6 shadow-sm">
+                                <h3 class="flex items-center text-xl font-semibold mb-4 text-gray-800 border-b border-gray-100 pb-2">
+                                    <i class="fas fa-gavel text-indigo-500 mr-2"></i>
+                                    Dettagli Asta
+                                </h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <span class="text-sm font-medium text-gray-500">Data Asta</span>
+                                        <p class="text-lg font-semibold text-gray-800">15 aprile 2025, ore 15:00</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-sm font-medium text-gray-500">Prezzo Base</span>
+                                        <p class="text-lg font-semibold text-gray-800">€130.300</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-sm font-medium text-gray-500">Offerta Minima</span>
+                                        <p class="text-lg font-semibold text-gray-800">€97.725</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-sm font-medium text-gray-500">Tribunale</span>
+                                        <p class="text-lg font-semibold text-gray-800">Tribunale di Nola, II Sezione Civile</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="thisavros-card p-6 shadow-sm">
+                                <h3 class="flex items-center text-xl font-semibold mb-4 text-gray-800 border-b border-gray-100 pb-2">
+                                    <i class="fas fa-exclamation-triangle text-indigo-500 mr-2"></i>
+                                    Criticità Principali
+                                </h3>
+                                <ul class="space-y-2 text-gray-700">
+                                    <li class="flex items-start">
+                                        <span class="w-4 h-4 rounded-full bg-yellow-500 mt-1 mr-2 flex-shrink-0"></span>
+                                        <span>Difformità edilizie rispetto al progetto originario (sanabili)</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="w-4 h-4 rounded-full bg-yellow-500 mt-1 mr-2 flex-shrink-0"></span>
+                                        <span>Immobile occupato da comproprietaria/familiari</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="w-4 h-4 rounded-full bg-yellow-500 mt-1 mr-2 flex-shrink-0"></span>
+                                        <span>Necessità di sanatoria e ristrutturazione</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <!-- Financial Tab -->
+                        <div id="content-financial" class="tab-content hidden">
+                            <div class="thisavros-card p-6 mb-6 shadow-sm">
+                                <h3 class="flex items-center text-xl font-semibold mb-4 text-gray-800 border-b border-gray-100 pb-2">
+                                    <i class="fas fa-euro-sign text-indigo-500 mr-2"></i>
+                                    Analisi Finanziaria
+                                </h3>
+                                
+                                <div class="mb-6">
+                                    <h4 class="text-lg font-medium mb-2 text-gray-700">ROI Atteso per Scenario</h4>
+                                    <div class="h-64">
+                                        <canvas id="roiChart"></canvas>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-6">
+                                    <h4 class="text-lg font-medium mb-2 text-gray-700">Analisi Costi</h4>
+                                    <div class="h-64">
+                                        <canvas id="costsChart"></canvas>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <h4 class="text-lg font-medium mb-2 text-gray-700">Timeline Operazione (mesi)</h4>
+                                    <div class="h-64">
+                                        <canvas id="timelineChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Risks Tab -->
+                        <div id="content-risks" class="tab-content hidden">
+                            <div class="thisavros-card p-6 mb-6 shadow-sm">
+                                <h3 class="flex items-center text-xl font-semibold mb-4 text-gray-800 border-b border-gray-100 pb-2">
+                                    <i class="fas fa-exclamation-triangle text-indigo-500 mr-2"></i>
+                                    Matrice Rischi/Opportunità
+                                </h3>
+                                
+                                <div class="mb-6">
+                                    <h4 class="text-lg font-medium mb-2 text-gray-700">Radar dei Rischi</h4>
+                                    <div class="h-64">
+                                        <canvas id="riskChart"></canvas>
+                                    </div>
+                                </div>
+                                
+                                <div class="overflow-x-auto">
+                                    <table class="min-w-full divide-y divide-gray-200">
+                                        <thead class="bg-gray-50">
+                                            <tr>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rischio/Opportunità</th>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Impatto</th>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Probabilità</th>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mitigazione</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="bg-white divide-y divide-gray-200">
+                                            <tr>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Difformità edilizie</td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                    <span class="bg-red-100 text-red-800 px-2 py-1 rounded-full">Alto</span>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                    <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">Medio</span>
+                                                </td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">Indagare con un tecnico locale i costi di sanatoria</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Stato di occupazione</td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                    <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">Medio</span>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                    <span class="bg-red-100 text-red-800 px-2 py-1 rounded-full">Alto</span>
+                                                </td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">Richiedere al custode l'ordine di liberazione</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Buona localizzazione</td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                    <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full">Positivo</span>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                    <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full">-</span>
+                                                </td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">ZONA ricercata, mercato stabile, facilità di rivendita</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Recommendation Tab -->
+                        <div id="content-recommendation" class="tab-content hidden">
+                            <div class="thisavros-card p-6 mb-6 shadow-sm">
+                                <h3 class="flex items-center text-xl font-semibold mb-4 text-gray-800 border-b border-gray-100 pb-2">
+                                    <i class="fas fa-award text-indigo-500 mr-2"></i>
+                                    Raccomandazione Finale
+                                </h3>
+                                
+                                <div class="flex items-center mb-6">
+                                    <div class="mr-4">
+                                        <div class="w-16 h-16 rounded-full flex items-center justify-center bg-yellow-500">
+                                            <span class="text-white font-bold text-xl">!</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-lg font-bold text-gray-900">Semaforo dell'Investimento:</h4>
+                                        <p class="text-xl font-bold text-yellow-600">GIALLO/VERSO IL VERDE</p>
+                                        <p class="text-sm text-gray-600 mt-1">L'operazione può risultare favorevole, ma si raccomanda prudenza</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-6">
+                                    <h4 class="text-lg font-medium mb-2 text-gray-700">Giudizio di Fattibilità</h4>
+                                    <p class="text-gray-700 mb-2"><span class="font-semibold">Potenzialmente positivo</span>, a condizione di:</p>
+                                    <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                                        <li>Approfondire con il Professionista Delegato la situazione delle quote</li>
+                                        <li>Verificare i costi reali di sanatoria / adeguamento</li>
+                                        <li>Predisporre un piano di ristrutturazione chiaro</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="mb-6">
+                                    <h4 class="text-lg font-medium mb-2 text-gray-700">Prezzo Massimo Consigliato</h4>
+                                    <div class="bg-indigo-50 p-4 rounded-lg">
+                                        <p class="text-gray-700">Se l'asta effettivamente include l'intero immobile, mantenersi <span class="font-bold text-indigo-700">entro €110.000</span> di aggiudicazione per poter sostenere spese di regolarizzazione/ristrutturazione e raggiungere un ROI di almeno il 15% in scenario realistico.</p>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <h4 class="text-lg font-medium mb-2 text-gray-700">Strategia Consigliata</h4>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+                                            <div class="flex items-center text-indigo-600 mb-2">
+                                                <i class="fas fa-briefcase mr-1"></i>
+                                                <h5 class="font-medium">Diligence Approfondita</h5>
+                                            </div>
+                                            <p class="text-sm text-gray-600">Richiedere preventivi per sanatoria e lavori</p>
+                                        </div>
+                                        <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+                                            <div class="flex items-center text-indigo-600 mb-2">
+                                                <i class="fas fa-home mr-1"></i>
+                                                <h5 class="font-medium">Liberazione Immobile</h5>
+                                            </div>
+                                            <p class="text-sm text-gray-600">Far intervenire tempestivamente il custode</p>
+                                        </div>
+                                        <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+                                            <div class="flex items-center text-indigo-600 mb-2">
+                                                <i class="fas fa-chart-line mr-1"></i>
+                                                <h5 class="font-medium">Rivendita Rapida</h5>
+                                            </div>
+                                            <p class="text-sm text-gray-600">Posizionare l'immobile sul mercato con prezzo competitivo</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="mt-8 text-center text-gray-500 text-sm">
+            <p>© 2025 Thisavros | Analisi Aste Immobiliari</p>
+        </footer>
+    </div>
 
-// Componente Principale
-const ThisavrosDashboard = () => {
-  const [activeTab, setActiveTab] = useState('overview');
-  
-  // Dati dell'immobile
-  const propertyData = {
-    id: "NA4885/2023",
-    type: "Appartamento di tipo economico con cantinola",
-    location: "Via Abate Felice Toscano n. 28 (ex 26), int. 3, Piano 3, Pomigliano d'Arco (NA)",
-    surface: 96.35,
-    catSurface: 102,
-    rooms: 5.5,
-    composition: "Ingresso, soggiorno, cucina, disimpegno, 2 camere da letto, bagno, 2 balconi + cantinola",
-    condition: "Medio",
-    auctionDate: "15 aprile 2025, ore 15:00",
-    auctionBase: 130300,
-    minOffer: 97725,
-    minRaise: 3000,
-    courtName: "Tribunale di Nola, II Sezione Civile",
-    procedure: "Divisione endoesecutiva n. 4885/2023 R.G. (collegata a pignoramento R.G.E. 86/2022)",
-    occupation: "Occupato (verosimilmente da comproprietaria/familiari)",
-    docStatus: "Disponibili Avviso, Ordinanze, Perizia, Planimetrie, Foto",
-    urbanStatus: "Difformità sanabili ex art. 34 DPR 380/01",
-    legalStatus: "Potenziale vendita dell'intera proprietà",
-  };
-  
-  // Valori finanziari
-  const financialData = {
-    marketValue: 156954,
-    auctionBase: 130300,
-    pricePerSqm: Math.round(130300 / 96.35),
-    marketPriceRange: [1300, 1600],
-    resaleEstimate: {
-      low: 130000,
-      realistic: 150000,
-      high: 160000
-    },
-    costs: {
-      salePrice: 110000, // Ipotesi realistica
-      legalFees: 27500, // 25% come da avviso
-      renovationCosts: 20000,
-      totalInvestment: 157500
-    },
-    roi: {
-      pessimistic: 7.5,
-      realistic: 20,
-      optimistic: 30
-    },
-    timeline: {
-      purchase: 1, // mesi
-      renovation: 6,
-      resale: 8,
-      total: 15
-    }
-  };
-  
-  // Dati per i grafici
-  const roiData = [
-    { name: 'Pessimistico', roi: financialData.roi.pessimistic, fill: '#f87171' },
-    { name: 'Realistico', roi: financialData.roi.realistic, fill: '#fbbf24' },
-    { name: 'Ottimistico', roi: financialData.roi.optimistic, fill: '#34d399' },
-  ];
-  
-  const timelineData = [
-    { name: 'Acquisto', months: financialData.timeline.purchase, fill: '#60a5fa' },
-    { name: 'Ristrutturazione', months: financialData.timeline.renovation, fill: '#a78bfa' },
-    { name: 'Rivendita', months: financialData.timeline.resale, fill: '#34d399' },
-  ];
-  
-  const costsData = [
-    { name: 'Prezzo Acquisto', value: financialData.costs.salePrice },
-    { name: 'Spese Legali', value: financialData.costs.legalFees },
-    { name: 'Ristrutturazione', value: financialData.costs.renovationCosts },
-  ];
-  
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28'];
-  
-  const risksData = [
-    { subject: 'Difformità edilizie', A: 7, fullMark: 10 },
-    { subject: 'Stato occupazione', A: 6, fullMark: 10 },
-    { subject: 'Costi ristrutturazione', A: 5, fullMark: 10 },
-    { subject: 'Localizzazione', A: 2, fullMark: 10 },
-    { subject: 'Prezzo/mercato', A: 3, fullMark: 10 },
-  ];
-  
-  // Determinazione del semaforo per la raccomandazione
-  let recommendationColor = "bg-yellow-500";
-  let recommendationText = "GIALLO/VERSO IL VERDE";
-  
-  // Componenti delle tab
-  const renderOverview = () => (
-    <div>
-      <div className={styles.card}>
-        <h3 className={styles.cardHeader}>
-          <Building className={styles.cardIcon} />
-          Informazioni Immobile
-        </h3>
-        <div className={styles.infoGrid}>
-          <div className={styles.infoItem}>
-            <span className={styles.infoLabel}>Tipologia</span>
-            <span className={styles.infoValue}>{propertyData.type}</span>
-          </div>
-          <div className={styles.infoItem}>
-            <span className={styles.infoLabel}>Superficie Commerciale</span>
-            <span className={styles.infoValue}>{propertyData.surface} mq</span>
-          </div>
-          <div className={styles.infoItem}>
-            <span className={styles.infoLabel}>Composizione</span>
-            <span className={styles.infoValue}>{propertyData.composition}</span>
-          </div>
-          <div className={styles.infoItem}>
-            <span className={styles.infoLabel}>Stato Conservazione</span>
-            <span className={styles.infoValue}>{propertyData.condition}</span>
-          </div>
-        </div>
-      </div>
-      
-      <div className={styles.card}>
-        <h3 className={styles.cardHeader}>
-          <Hammer className={styles.cardIcon} />
-          Dettagli Asta
-        </h3>
-        <div className={styles.infoGrid}>
-          <div className={styles.infoItem}>
-            <span className={styles.infoLabel}>Data Asta</span>
-            <span className={styles.infoValue}>{propertyData.auctionDate}</span>
-          </div>
-          <div className={styles.infoItem}>
-            <span className={styles.infoLabel}>Prezzo Base</span>
-            <span className={styles.infoValue}>€{propertyData.auctionBase.toLocaleString()}</span>
-          </div>
-          <div className={styles.infoItem}>
-            <span className={styles.infoLabel}>Offerta Minima</span>
-            <span className={styles.infoValue}>€{propertyData.minOffer.toLocaleString()}</span>
-          </div>
-          <div className={styles.infoItem}>
-            <span className={styles.infoLabel}>Tribunale</span>
-            <span className={styles.infoValue}>{propertyData.courtName}</span>
-          </div>
-        </div>
-      </div>
-      
-      <div className={styles.card}>
-        <h3 className={styles.cardHeader}>
-          <AlertTriangle className={styles.cardIcon} />
-          Criticità Principali
-        </h3>
-        <ul className="space-y-2 text-gray-700">
-          <li className="flex items-start">
-            <span className="w-4 h-4 rounded-full bg-yellow-500 mt-1 mr-2 flex-shrink-0"></span>
-            <span>Difformità edilizie rispetto al progetto originario (sanabili)</span>
-          </li>
-          <li className="flex items-start">
-            <span className="w-4 h-4 rounded-full bg-yellow-500 mt-1 mr-2 flex-shrink-0"></span>
-            <span>Immobile occupato da comproprietaria/familiari</span>
-          </li>
-          <li className="flex items-start">
-            <span className="w-4 h-4 rounded-full bg-yellow-500 mt-1 mr-2 flex-shrink-0"></span>
-            <span>Necessità di sanatoria e ristrutturazione</span>
-          </li>
-        </ul>
-      </div>
-    </div>
-  );
-  
-  const renderFinancial = () => (
-    <div>
-      <div className={styles.card}>
-        <h3 className={styles.cardHeader}>
-          <Euro className={styles.cardIcon} />
-          Analisi Finanziaria
-        </h3>
-        
-        <div className="mb-6">
-          <h4 className="text-lg font-medium mb-2 text-gray-700">ROI Atteso per Scenario</h4>
-          <ResponsiveContainer width="100%" height={200}>
-            <BarChart data={roiData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis unit="%" />
-              <Tooltip formatter={(value) => [`${value}%`, 'ROI']} />
-              <Bar dataKey="roi" fill="#8884d8">
-                {roiData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.fill} />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-        
-        <div className="mb-6">
-          <h4 className="text-lg font-medium mb-2 text-gray-700">Analisi Costi</h4>
-          <ResponsiveContainer width="100%" height={200}>
-            <PieChart>
-              <Pie
-                data={costsData}
-                cx="50%"
-                cy="50%"
-                outerRadius={60}
-                fill="#8884d8"
-                dataKey="value"
-                label={({name, percent}) => `${name}: ${(percent * 100).toFixed(0)}%`}
-              >
-                {costsData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip formatter={(value) => [`€${value.toLocaleString()}`, 'Importo']} />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
-        
-        <div>
-          <h4 className="text-lg font-medium mb-2 text-gray-700">Timeline Operazione (mesi)</h4>
-          <ResponsiveContainer width="100%" height={200}>
-            <BarChart data={timelineData} layout="vertical">
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis type="number" />
-              <YAxis dataKey="name" type="category" width={100} />
-              <Tooltip formatter={(value) => [`${value} mesi`, 'Durata']} />
-              <Bar dataKey="months" background={{ fill: '#eee' }}>
-                {timelineData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.fill} />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
-    </div>
-  );
-  
-  const renderRisks = () => (
-    <div>
-      <div className={styles.card}>
-        <h3 className={styles.cardHeader}>
-          <AlertTriangle className={styles.cardIcon} />
-          Matrice Rischi/Opportunità
-        </h3>
-        
-        <div className="mb-6">
-          <h4 className="text-lg font-medium mb-2 text-gray-700">Radar dei Rischi</h4>
-          <ResponsiveContainer width="100%" height={300}>
-            <RadarChart outerRadius={90} data={risksData}>
-              <PolarGrid />
-              <PolarAngleAxis dataKey="subject" />
-              <PolarRadiusAxis angle={30} domain={[0, 10]} />
-              <Radar name="Livello Rischio" dataKey="A" stroke="#FF8042" fill="#FF8042" fillOpacity={0.6} />
-              <Tooltip />
-            </RadarChart>
-          </ResponsiveContainer>
-        </div>
-        
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rischio/Opportunità</th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Impatto</th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Probabilità</th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mitigazione</th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Difformità edilizie</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  <span className="bg-red-100 text-red-800 px-2 py-1 rounded-full">Alto</span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">Medio</span>
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-500">Indagare con un tecnico locale i costi di sanatoria</td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Stato di occupazione</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">Medio</span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  <span className="bg-red-100 text-red-800 px-2 py-1 rounded-full">Alto</span>
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-500">Richiedere al custode l'ordine di liberazione</td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Buona localizzazione</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full">Positivo</span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  <span className="bg-gray-100 text-gray-800 px-2 py-1 rounded-full">-</span>
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-500">ZONA ricercata, mercato stabile, facilità di rivendita</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  );
-  
-  const renderRecommendation = () => (
-    <div>
-      <div className={styles.card}>
-        <h3 className={styles.cardHeader}>
-          <Award className={styles.cardIcon} />
-          Raccomandazione Finale
-        </h3>
-        
-        <div className="flex items-center mb-6">
-          <div className="mr-4">
-            <div className={`w-16 h-16 rounded-full flex items-center justify-center ${recommendationColor}`}>
-              <span className="text-white font-bold text-xl">!</span>
-            </div>
-          </div>
-          <div>
-            <h4 className="text-lg font-bold text-gray-900">Semaforo dell'Investimento:</h4>
-            <p className="text-xl font-bold text-yellow-600">{recommendationText}</p>
-            <p className="text-sm text-gray-600 mt-1">L'operazione può risultare favorevole, ma si raccomanda prudenza</p>
-          </div>
-        </div>
-        
-        <div className="mb-6">
-          <h4 className="text-lg font-medium mb-2 text-gray-700">Giudizio di Fattibilità</h4>
-          <p className="text-gray-700 mb-2"><span className="font-semibold">Potenzialmente positivo</span>, a condizione di:</p>
-          <ul className="list-disc pl-5 space-y-1 text-gray-700">
-            <li>Approfondire con il Professionista Delegato la situazione delle quote</li>
-            <li>Verificare i costi reali di sanatoria / adeguamento</li>
-            <li>Predisporre un piano di ristrutturazione chiaro</li>
-          </ul>
-        </div>
-        
-        <div className="mb-6">
-          <h4 className="text-lg font-medium mb-2 text-gray-700">Prezzo Massimo Consigliato</h4>
-          <div className="bg-indigo-50 p-4 rounded-lg">
-            <p className="text-gray-700">Se l'asta effettivamente include l'intero immobile, mantenersi <span className="font-bold text-indigo-700">entro €110.000</span> di aggiudicazione per poter sostenere spese di regolarizzazione/ristrutturazione e raggiungere un ROI di almeno il 15% in scenario realistico.</p>
-          </div>
-        </div>
-        
-        <div>
-          <h4 className="text-lg font-medium mb-2 text-gray-700">Strategia Consigliata</h4>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
-              <div className="flex items-center text-indigo-600 mb-2">
-                <Briefcase className="w-5 h-5 mr-1" />
-                <h5 className="font-medium">Diligence Approfondita</h5>
-              </div>
-              <p className="text-sm text-gray-600">Richiedere preventivi per sanatoria e lavori</p>
-            </div>
-            <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
-              <div className="flex items-center text-indigo-600 mb-2">
-                <Home className="w-5 h-5 mr-1" />
-                <h5 className="font-medium">Liberazione Immobile</h5>
-              </div>
-              <p className="text-sm text-gray-600">Far intervenire tempestivamente il custode</p>
-            </div>
-            <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
-              <div className="flex items-center text-indigo-600 mb-2">
-                <TrendingUp className="w-5 h-5 mr-1" />
-                <h5 className="font-medium">Rivendita Rapida</h5>
-              </div>
-              <p className="text-sm text-gray-600">Posizionare l'immobile sul mercato con prezzo competitivo</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-  
-  return (
-    <div className={styles.container}>
-      <header className={styles.header}>
-        <div className={styles.logo}>
-          <Award size={32} className={styles.logoIcon} />
-          Thisavros
-        </div>
-        <div className="text-right">
-          <h2 className="text-sm font-medium text-gray-500">Analisi Asta Immobiliare</h2>
-          <p className="text-xl font-bold text-gray-800">{propertyData.id}</p>
-        </div>
-      </header>
-      
-      <div className={styles.mainContent}>
-        <div className={styles.sidebar}>
-          <div className={styles.card}>
-            <h3 className={styles.cardHeader}>
-              <MapPin className={styles.cardIcon} />
-              Ubicazione
-            </h3>
-            <p className="text-gray-700 mb-4">{propertyData.location}</p>
+    <script>
+        // Tab navigation
+        function changeTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
             
-            <div className="bg-gray-50 p-4 rounded-lg mb-4">
-              <div className="flex justify-between mb-2">
-                <span className="text-sm font-medium text-gray-500">Prezzo Base</span>
-                <span className="text-lg font-bold text-indigo-600">€{propertyData.auctionBase.toLocaleString()}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-sm font-medium text-gray-500">Prezzo/mq</span>
-                <span className="text-lg font-bold text-indigo-600">€{financialData.pricePerSqm}/mq</span>
-              </div>
-            </div>
+            // Remove active class from all tab buttons
+            document.querySelectorAll('[id^="tab-"]').forEach(button => {
+                button.classList.remove('active-tab');
+                button.classList.add('text-gray-500');
+                button.classList.remove('text-indigo-700');
+            });
             
-            <div className="mb-4">
-              <div className="flex justify-between mb-1">
-                <span className="text-sm text-gray-500">Valore di mercato</span>
-                <span className="text-sm font-medium">€{financialData.marketValue.toLocaleString()}</span>
-              </div>
-              <div className="flex justify-between mb-1">
-                <span className="text-sm text-gray-500">Offerta minima</span>
-                <span className="text-sm font-medium">€{propertyData.minOffer.toLocaleString()}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-sm text-gray-500">Data asta</span>
-                <span className="text-sm font-medium">{propertyData.auctionDate.split(',')[0]}</span>
-              </div>
-            </div>
+            // Show selected tab content
+            document.getElementById('content-' + tabName).classList.remove('hidden');
             
-            <div className="flex flex-wrap gap-2">
-              <span className={`${styles.badge} bg-indigo-100 text-indigo-800`}>
-                Appartamento
-              </span>
-              <span className={`${styles.badge} bg-blue-100 text-blue-800`}>
-                {propertyData.surface} mq
-              </span>
-              <span className={`${styles.badge} bg-green-100 text-green-800`}>
-                Cantinola
-              </span>
-              <span className={`${styles.badge} bg-yellow-100 text-yellow-800`}>
-                {propertyData.condition}
-              </span>
-            </div>
-          </div>
-          
-          <div className={styles.card}>
-            <h3 className={styles.cardHeader}>
-              <Scale className={styles.cardIcon} />
-              Valutazione ROI
-            </h3>
+            // Add active class to selected tab button
+            document.getElementById('tab-' + tabName).classList.add('active-tab');
+            document.getElementById('tab-' + tabName).classList.remove('text-gray-500');
+            document.getElementById('tab-' + tabName).classList.add('text-indigo-700');
             
-            <div className="space-y-4">
-              <div>
-                <div className="flex justify-between mb-1">
-                  <span className="text-sm font-medium text-gray-600">Pessimistico</span>
-                  <span className="text-sm font-medium text-red-600">{financialData.roi.pessimistic}%</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2.5">
-                  <div className="bg-red-500 h-2.5 rounded-full" style={{ width: `${Math.min(100, financialData.roi.pessimistic * 3)}%` }}></div>
-                </div>
-              </div>
-              
-              <div>
-                <div className="flex justify-between mb-1">
-                  <span className="text-sm font-medium text-gray-600">Realistico</span>
-                  <span className="text-sm font-medium text-yellow-600">{financialData.roi.realistic}%</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2.5">
-                  <div className="bg-yellow-500 h-2.5 rounded-full" style={{ width: `${Math.min(100, financialData.roi.realistic * 3)}%` }}></div>
-                </div>
-              </div>
-              
-              <div>
-                <div className="flex justify-between mb-1">
-                  <span className="text-sm font-medium text-gray-600">Ottimistico</span>
-                  <span className="text-sm font-medium text-green-600">{financialData.roi.optimistic}%</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2.5">
-                  <div className="bg-green-500 h-2.5 rounded-full" style={{ width: `${Math.min(100, financialData.roi.optimistic * 3)}%` }}></div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="mt-4 pt-4 border-t border-gray-100">
-              <h4 className="text-sm font-semibold text-gray-700 mb-2">Raccomandazione</h4>
-              <div className="flex items-center">
-                <div className={`w-4 h-4 rounded-full ${recommendationColor} mr-2`}></div>
-                <span className="font-semibold text-gray-700">{recommendationText}</span>
-              </div>
-              <p className="text-sm text-gray-600 mt-2">
-                Prezzo massimo consigliato: <span className="font-bold">€110.000</span>
-              </p>
-            </div>
-          </div>
-        </div>
+            // Initialize charts if needed
+            if (tabName === 'financial') {
+                initFinancialCharts();
+            } else if (tabName === 'risks') {
+                initRiskChart();
+            }
+        }
         
-        <div className={styles.content}>
-          <div className="bg-white rounded-lg shadow-sm mb-6">
-            <div className="flex border-b">
-              <button
-                onClick={() => setActiveTab('overview')}
-                className={`${styles.tabButton} ${activeTab === 'overview' ? 'bg-indigo-50 text-indigo-700 border-b-2 border-indigo-500' : 'text-gray-500 hover:text-gray-700'}`}
-              >
-                Panoramica
-              </button>
-              <button
-                onClick={() => setActiveTab('financial')}
-                className={`${styles.tabButton} ${activeTab === 'financial' ? 'bg-indigo-50 text-indigo-700 border-b-2 border-indigo-500' : 'text-gray-500 hover:text-gray-700'}`}
-              >
-                Analisi Finanziaria
-              </button>
-              <button
-                onClick={() => setActiveTab('risks')}
-                className={`${styles.tabButton} ${activeTab === 'risks' ? 'bg-indigo-50 text-indigo-700 border-b-2 border-indigo-500' : 'text-gray-500 hover:text-gray-700'}`}
-              >
-                Rischi/Opportunità
-              </button>
-              <button
-                onClick={() => setActiveTab('recommendation')}
-                className={`${styles.tabButton} ${activeTab === 'recommendation' ? 'bg-indigo-50 text-indigo-700 border-b-2 border-indigo-500' : 'text-gray-500 hover:text-gray-700'}`}
+        // Initialize financial charts
+        function initFinancialCharts() {
+            // ROI Chart
+            const roiCtx = document.getElementById('roiChart').getContext('2d');
+            const roiChart = new Chart(roiCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Pessimistico', 'Realistico', 'Ottimistico'],
+                    datasets: [{
+                        label: 'ROI (%)',
+                        data: [7.5, 20, 30],
+                        backgroundColor: [
+                            'rgba(239, 68, 68, 0.7)',
+                            'rgba(234, 179, 8, 0.7)',
+                            'rgba(34, 197, 94, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(239, 68, 68, 1)',
+                            'rgba(234, 179, 8, 1)',
+                            'rgba(34, 197, 94, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'ROI (%)'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Costs Chart
+            const costsCtx = document.getElementById('costsChart').getContext('2d');
+            const costsChart = new Chart(costsCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Prezzo Acquisto', 'Spese Legali', 'Ristrutturazione'],
+                    datasets: [{
+                        data: [110000, 27500, 20000],
+                        backgroundColor: [
+                            'rgba(79, 70, 229, 0.7)',
+                            'rgba(245, 158, 11, 0.7)',
+                            'rgba(6, 182, 212, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(79, 70, 229, 1)',
+                            'rgba(245, 158, 11, 1)',
+                            'rgba(6, 182, 212, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += '€' + context.raw.toLocaleString();
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Timeline Chart
+            const timelineCtx = document.getElementById('timelineChart').getContext('2d');
+            const timelineChart = new Chart(timelineCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Acquisto', 'Ristrutturazione', 'Rivendita'],
+                    datasets: [{
+                        label: 'Mesi',
+                        data: [1, 6, 8],
+                        backgroundColor: [
+                            'rgba(96, 165, 250, 0.7)',
+                            'rgba(167, 139, 250, 0.7)',
+                            'rgba(52, 211, 153, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(96, 165, 250, 1)',
+                            'rgba(167, 139, 250, 1)',
+                            'rgba(52, 211, 153, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Durata (mesi)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Initialize risk chart
+        function initRiskChart() {
+            const riskCtx = document.getElementById('riskChart').getContext('2d');
+            const riskChart = new Chart(riskCtx, {
+                type: 'radar',
+                data: {
+                    labels: [
+                        'Difformità edilizie',
+                        'Stato occupazione',
+                        'Costi ristrutturazione',
+                        'Localizzazione',
+                        'Prezzo/mercato'
+                    ],
+                    datasets: [{
+                        label: 'Livello Rischio',
+                        data: [7, 6, 5, 2, 3],
+                        backgroundColor: 'rgba(255, 128, 66, 0.2)',
+                        borderColor: 'rgba(255, 128, 66, 1)',
+                        pointBackgroundColor: 'rgba(255, 128, 66, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(255, 128, 66, 1)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: true
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 10
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Initialize default tab
+        document.addEventListener('DOMContentLoaded', function() {
+            changeTab('overview');
+        });
+    </script>
+</body>
+</html>
